@@ -212,14 +212,13 @@ input[type="number"]:focus {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   border: 1px solid #966529d0;
-  display: flex;
   justify-content: space-between;
   overflow: hidden;
 }
 
 .list__item > .inner {
   overflow: hidden;
-  flex-basis: 260px;
+  flex-basis: 200px;
 }
 
 .list__item > .inner > h5 {
@@ -233,14 +232,30 @@ input[type="number"]:focus {
   font-size: 14px;
 }
 
-.check-button {
-  background: url("../img/check-outline.svg");
+.section__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin: 8px 0;
+}
+
+.edit-button,
+.check-button,
+.undo-button,
+.trash-button {
   background-size: contain;
   width: 20px;
   height: 20px;
-  margin-left: auto;
   cursor: pointer;
   border: none;
+  margin: 0 6px;
+}
+
+.edit-button {
+  background: url("../img/edit.svg");
+}
+
+.check-button {
+  background: url("../img/check-outline.svg");
 }
 
 .check-button:hover {
@@ -250,12 +265,6 @@ input[type="number"]:focus {
 
 .trash-button {
   background: url("../img/trash-outline.svg");
-  background-size: contain;
-  width: 20px;
-  height: 20px;
-  margin-left: 4px;
-  cursor: pointer;
-  border: none;
 }
 
 .trash-button:hover {
@@ -265,12 +274,6 @@ input[type="number"]:focus {
 
 .undo-button {
   background: url("../img/undo-fill.svg");
-  background-size: contain;
-  width: 20px;
-  height: 20px;
-  margin-left: auto;
-  cursor: pointer;
-  border: none;
 }
 
 .undo-button:hover {

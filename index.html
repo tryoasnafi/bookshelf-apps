@@ -20,7 +20,7 @@
         <!-- Form for submit your book -->
         <section class="flex-grow-1">
             <form class="form-book" id="submitBookForm">
-                <h3 class="form__title text-center">Add New Book</h3>
+                <h3 class="form__title text-center" id="bookFormHeader">Add New Book</h3>
                 <div class="form__group">
                     <label for="bookTitle">Title</label>
                     <input class="form__input" type="text" name="book-title" id="bookTitle" required>
@@ -31,15 +31,15 @@
                 </div>
                 <div class="form__group">
                     <label for="bookRelease">Release Year</label>
-                    <input class="form__input" type="number" minlength="4" maxlength="4" min="1800" name="book-release"
-                        id="bookRelease" required>
+                    <input class="form__input" type="number" min="1800" max="2999" name="book-release" id="bookRelease"
+                        required>
                 </div>
                 <div class="form__check">
                     <label for="isComplete">Has Been Read?</label>
-                    <input class="form__check" type="checkbox" minlength="4" maxlength="4" min="1800"
-                        name="is-book-read" id="isComplete">
+                    <input class="form__check" type="checkbox" name="is-book-read" id="isComplete">
                 </div>
-                <button class="btn btn--primary btn--block" type="submit"><strong>SUBMIT</strong></button>
+                <button class="btn btn--primary btn--block" type="submit"
+                    id="submitButton"><strong>SUBMIT</strong></button>
             </form>
         </section>
         <!--  -->

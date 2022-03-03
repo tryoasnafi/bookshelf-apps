@@ -2,14 +2,26 @@ const books = []
 const RENDER_EVENT = 'render-book'
 const STORAGE_KEY = "BOOKSHELF_APPS"
 
+const submitButton = document.getElementById('submitButton')
+
 const modal = document.getElementById('deleteModal')
 const deleteButton = document.getElementsByClassName('delete-button')[0]
+
+const titleElement = document.getElementById('bookTitle')
+const authorElement = document.getElementById('bookAuthor')
+const yearElement = document.getElementById('bookRelease')
+const isCompleteElement = document.getElementById('isComplete')
 
 document.addEventListener('DOMContentLoaded', () => {
     const submitBookForm = document.getElementById('submitBookForm')
     submitBookForm.addEventListener('submit', (event) => {
-        event.preventDefault()
-        addBook()
+        if (submitButton.getAttribute('data-id')) {
+            updateBook()
+        } else {
+            event.preventDefault();
+            addBook()
+        }
+
         submitBookForm.reset()
     })
 
@@ -33,108 +45,6 @@ document.addEventListener(RENDER_EVENT, () => {
         }
     }
 })
-
-const generateId = () => +new Date()
-
-const generateBookObject = (id, title, author, year, isComplete) => {
-    return {
-        id,
-        title,
-        author,
-        year,
-        isComplete
-    }
-}
-
-const addBook = () => {
-    const title = document.getElementById('bookTitle').value
-    const author = document.getElementById('bookAuthor').value
-    const year = parseInt(document.getElementById('bookRelease').value)
-    const isComplete = document.getElementById('isComplete').checked
-
-    const id = generateId()
-    const bookObject = generateBookObject(id, title, author, year, isComplete)
-
-    books.push(bookObject)
-
-    document.dispatchEvent(new Event(RENDER_EVENT))
-    saveData()
-}
-
-const makeBook = (bookObject) => {
-    const textTitle = document.createElement("h5"),
-        textAuthor = document.createElement("p"),
-        textYear = document.createElement("p"),
-        textContainer = document.createElement("div"),
-        container = document.createElement("li")
-
-    textTitle.innerText = bookObject.title
-    textAuthor.innerText = bookObject.author
-    textYear.innerText = bookObject.year
-
-    textContainer.classList.add("inner")
-    textContainer.append(textTitle, textAuthor, textYear)
-
-    container.classList.add('list__item')
-    container.append(textContainer)
-    container.setAttribute("id", `book-${bookObject.id}`)
-
-    const trashButton = document.createElement("button")
-    trashButton.classList.add('trash-button')
-    trashButton.addEventListener('click', e => {
-        e.preventDefault()
-        confirmRemove(bookObject.id)
-    })
-
-
-    if (bookObject.isComplete) {
-        const undoButton = document.createElement("button")
-        undoButton.classList.add('undo-button')
-        undoButton.addEventListener("click", () => undoBookFromCompleted(bookObject.id))
-
-        container.append(undoButton, trashButton)
-    } else {
-        const checkButton = document.createElement("button")
-        checkButton.classList.add("check-button")
-        checkButton.addEventListener('click', () => addBookCompleted(bookObject.id))
-
-        container.append(checkButton, trashButton)
-    }
-
-    return container
-}
-
-const findBook = (bookId) => {
-    for (const bookItem of books) {
-        if (bookItem.id === bookId) return bookItem
-    }
-    return null
-}
-
-function findBookIndex(bookId) {
-    for (const index in books) {
-        if (books[index].id === bookId) return index
-    }
-    return -1
-}
-
-const addBookCompleted = (bookId) => {
-    const bookTarget = findBook(bookId)
-    if (bookTarget == null) return
-
-    bookTarget.isComplete = true
-    document.dispatchEvent(new Event(RENDER_EVENT))
-    saveData()
-}
-
-const undoBookFromCompleted = (bookId) => {
-    const bookTarget = findBook(bookId)
-    if (bookTarget == null) return
-
-    bookTarget.isComplete = false
-    document.dispatchEvent(new Event(RENDER_EVENT))
-    saveData()
-}
 
 const modalEvent = () => {
     const closeButton = document.getElementsByClassName('close-button')[0]
@@ -162,6 +72,114 @@ const modalEvent = () => {
             throw new Error(`Failed to delete book with id: ${bookId}`)
         }
     })
+}
+
+const generateId = () => +new Date()
+
+const generateBookObject = (id, title, author, year, isComplete) => {
+    return {
+        id,
+        title,
+        author,
+        year,
+        isComplete
+    }
+}
+
+const addBook = () => {
+    const id = generateId()
+    const bookObject = generateBookObject(id, titleElement.value, authorElement.value, +yearElement.value, isCompleteElement.checked)
+    console.log(typeof +yearElement.value)
+    books.push(bookObject)
+
+    document.dispatchEvent(new Event(RENDER_EVENT))
+    saveData()
+}
+
+const makeBook = (bookObject) => {
+    const textTitle = document.createElement("h5"),
+        textAuthor = document.createElement("p"),
+        textYear = document.createElement("p"),
+        textContainer = document.createElement("div"),
+        container = document.createElement("li")
+
+    textTitle.innerText = bookObject.title
+    textAuthor.innerText = bookObject.author
+    textYear.innerText = bookObject.year
+
+    textContainer.classList.add("inner")
+    textContainer.append(textTitle, textAuthor, textYear)
+
+    container.classList.add('list__item')
+    container.append(textContainer)
+    container.setAttribute("id", `book-${bookObject.id}`)
+
+    const actionsContainer = document.createElement("section")
+    actionsContainer.classList.add('section__actions')
+
+    const trashButton = document.createElement("button")
+    trashButton.classList.add('trash-button')
+    trashButton.addEventListener('click', e => {
+        e.preventDefault()
+        confirmRemove(bookObject.id)
+    })
+
+    const editButton = document.createElement("button")
+    editButton.classList.add('edit-button')
+    editButton.addEventListener('click', e => {
+        e.preventDefault()
+        editBook(bookObject.id)
+    })
+
+    if (bookObject.isComplete) {
+        const undoButton = document.createElement("button")
+        undoButton.classList.add('undo-button')
+        undoButton.addEventListener("click", () => undoBookFromCompleted(bookObject.id))
+
+        actionsContainer.append(editButton, undoButton, trashButton)
+
+    } else {
+        const checkButton = document.createElement("button")
+        checkButton.classList.add("check-button")
+        checkButton.addEventListener('click', () => addBookCompleted(bookObject.id))
+
+        actionsContainer.append(editButton, checkButton, trashButton)
+    }
+
+    container.append(actionsContainer)
+    return container
+}
+
+const findBook = (bookId) => {
+    for (const bookItem of books) {
+        if (bookItem.id === bookId) return bookItem
+    }
+    return null
+}
+
+const findBookIndex = (bookId) => {
+    for (const index in books) {
+        if (books[index].id === bookId) return index
+    }
+    return -1
+}
+
+const addBookCompleted = (bookId) => {
+    const bookTarget = findBook(bookId)
+    if (bookTarget == null) return
+
+    bookTarget.isComplete = true
+    document.dispatchEvent(new Event(RENDER_EVENT))
+    saveData()
+}
+
+const undoBookFromCompleted = (bookId) => {
+    const bookTarget = findBook(bookId)
+    if (bookTarget == null) return
+
+    bookTarget.isComplete = false
+    document.dispatchEvent(new Event(RENDER_EVENT))
+    saveData()
 }
 
 const confirmRemove = (bookId) => {
@@ -213,15 +231,41 @@ const loadBookFromStorage = () => {
 const searchInput = document.getElementById("search")
 searchInput.addEventListener("keyup", () => {
     const filter = searchInput.value.toLowerCase()
-    const listItems = document.getElementsByClassName("list__item")
+    const bookItems = document.getElementsByClassName("list__item")
 
-    for (let i = 0; i < listItems.length; i++) {
-        const title = listItems[i].getElementsByTagName("h5")[0]
-        const textValue = title.textContent || title.innerText
-        if (textValue.toLowerCase().indexOf(filter) > -1) {
-            listItems[i].style.display = ""
+    for (const bookItem of bookItems) {
+        const title = bookItem.firstElementChild.textContent
+        if (title.toLowerCase().indexOf(filter) != -1) {
+            bookItem.style.display = ""
         } else {
-            listItems[i].style.display = "none"
+            bookItem.style.display = "none"
         }
     }
 })
+
+// Edit book feature
+const editBook = (bookId) => {
+    const bookTarget = findBook(bookId)
+
+    titleElement.value = bookTarget.title
+    authorElement.value = bookTarget.author
+    yearElement.value = bookTarget.year
+    isCompleteElement.checked = bookTarget.isComplete
+
+    submitButton.setAttribute('data-id', bookId)
+    submitButton.innerHTML = "<strong>UPDATE</strong>"
+    document.getElementById("bookFormHeader").innerHTML = "Update Book"
+}
+
+const updateBook = () => {
+    const id = +submitButton.getAttribute('data-id')
+
+    const bookTarget = findBook(id)
+    bookTarget.title = titleElement.value
+    bookTarget.author = authorElement.value
+    bookTarget.year = +yearElement.value
+    bookTarget.isComplete = isCompleteElement.checked
+
+    document.dispatchEvent(new Event(RENDER_EVENT))
+    saveData()
+}
