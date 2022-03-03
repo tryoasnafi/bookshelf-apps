@@ -3,8 +3,6 @@ const RENDER_EVENT = 'render-book'
 const STORAGE_KEY = "BOOKSHELF_APPS"
 
 const modal = document.getElementById('deleteModal')
-const closeButton = document.getElementsByClassName('close-button')[0]
-const cancelButton = document.getElementsByClassName('cancel-button')[0]
 const deleteButton = document.getElementsByClassName('delete-button')[0]
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -139,6 +137,9 @@ const undoBookFromCompleted = (bookId) => {
 }
 
 const modalEvent = () => {
+    const closeButton = document.getElementsByClassName('close-button')[0]
+    const cancelButton = document.getElementsByClassName('cancel-button')[0]
+
     const hideModal = () => modal.style.display = "none"
 
     closeButton.addEventListener('click', () => hideModal())
