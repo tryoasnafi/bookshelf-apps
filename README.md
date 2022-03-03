@@ -3,7 +3,7 @@ Simple bookshelf app made using HTML, CSS, and Vanilla JavaScript. I made this p
 
 I learn how to build semantic HTML, know more about CSS selector, pseudo-element, and manipulation DOM with JavaScript. 
 
-## Features section
+## Features
 - Add New Book
 - Complete and Uncomplete Book Shelves
 - Move Books Between Shelves
