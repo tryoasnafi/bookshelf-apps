@@ -1,96 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bookshelf Apps</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
 
-<body>
+  <body>
     <!-- Header Section -->
     <header class="text-center">
-        <h1>Bookshelf Apps</h1>
-        <p>Remind your books everywhere in no time</p>
+      <h1>Bookshelf Apps</h1>
+      <p>Remind your books everywhere in no time</p>
     </header>
     <!-- Main Section -->
     <main>
-        <!-- Form for submit your book -->
-        <section class="flex-grow-1">
-            <form class="form-book" id="submitBookForm">
-                <h3 class="form__title text-center" id="bookFormHeader">Add New Book</h3>
-                <div class="form__group">
-                    <label for="bookTitle">Title</label>
-                    <input class="form__input" type="text" name="book-title" id="bookTitle" required>
-                </div>
-                <div class="form__group">
-                    <label for="bookAuthor">Author</label>
-                    <input class="form__input" type="text" name="book-author" id="bookAuthor" required>
-                </div>
-                <div class="form__group">
-                    <label for="bookRelease">Release Year</label>
-                    <input class="form__input" type="number" min="1800" max="2999" name="book-release" id="bookRelease"
-                        required>
-                </div>
-                <div class="form__check">
-                    <label for="isComplete">Has Been Read?</label>
-                    <input class="form__check" type="checkbox" name="is-book-read" id="isComplete">
-                </div>
-                <button class="btn btn--primary btn--block" type="submit"
-                    id="submitButton"><strong>SUBMIT</strong></button>
-            </form>
+      <!-- Form for submit your book -->
+      <section class="flex-grow-1">
+        <form class="form-book" id="submitBookForm">
+          <h3 class="form__title text-center" id="bookFormHeader">
+            Add New Book
+          </h3>
+          <div class="form__group">
+            <label for="bookTitle">Title</label>
+            <input
+              class="form__input"
+              type="text"
+              name="book-title"
+              id="bookTitle"
+              required
+            />
+          </div>
+          <div class="form__group">
+            <label for="bookAuthor">Author</label>
+            <input
+              class="form__input"
+              type="text"
+              name="book-author"
+              id="bookAuthor"
+              required
+            />
+          </div>
+          <div class="form__group">
+            <label for="bookRelease">Release Year</label>
+            <input
+              class="form__input"
+              type="number"
+              min="1800"
+              max="2999"
+              name="book-release"
+              id="bookRelease"
+              required
+            />
+          </div>
+          <div class="form__check">
+            <label for="isComplete">Has Been Read?</label>
+            <input
+              class="form__check"
+              type="checkbox"
+              name="is-book-read"
+              id="isComplete"
+            />
+          </div>
+          <button
+            class="btn btn--primary btn--block"
+            type="submit"
+            id="submitButton"
+          >
+            <strong>SUBMIT</strong>
+          </button>
+        </form>
+      </section>
+      <!--  -->
+      <aside class="flex-grow-4">
+        <section class="section__search">
+          <svg
+            class="search-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <form class="form-search">
+            <input
+              id="search"
+              type="search"
+              autocomplete="off"
+              placeholder="Search your books"
+            />
+          </form>
         </section>
-        <!--  -->
-        <aside class="flex-grow-4">
-            <section class="section__search">
-                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <form class="form-search">
-                    <input id="search" type="search" autocomplete="off" placeholder="Search your books">
-                </form>
-            </section>
-            <section class="section__bookshelf">
-                <section class="bookshelf__unread">
-                    <h4 class="bookshelf__title text-center">Not Finished Reading</h4>
-                    <ul class="list__uncompleted" id="uncompletedRead">
-                    </ul>
-                </section>
-                <section class="bookshelf__read">
-                    <h4 class="bookshelf__title text-center">Finished Reading</h4>
-                    <ul class="list__completed" id="completedRead">
-                    </ul>
-                </section>
-            </section>
-        </aside>
+        <section class="section__bookshelf">
+          <section class="bookshelf__unread">
+            <h4 class="bookshelf__title text-center">Unfinished Reading</h4>
+            <ul class="list__uncompleted" id="uncompletedRead"></ul>
+          </section>
+          <section class="bookshelf__read">
+            <h4 class="bookshelf__title text-center">Finished Reading</h4>
+            <ul class="list__completed" id="completedRead"></ul>
+          </section>
+        </section>
+      </aside>
     </main>
     <!-- Modal Delete Confirmation -->
     <!-- The Modal -->
     <section id="deleteModal" class="modal">
-        <!-- Modal content -->
-        <div class="modal__content">
-            <span class="close-button">&times;</span>
-            <h2>Delete Book</h2>
-            <p>Are you sure want to delete this book?</p>
-            <section class="clearfix">
-                <button class="cancel-button">Cancel</button>
-                <button class="delete-button" data-id="">Delete</button>
-            </section>
-        </div>
+      <!-- Modal content -->
+      <div class="modal__content">
+        <span class="close-button">&times;</span>
+        <h2>Delete Book</h2>
+        <p>Are you sure want to delete this book?</p>
+        <section class="clearfix">
+          <button class="cancel-button">Cancel</button>
+          <button class="delete-button" data-id="">Delete</button>
+        </section>
+      </div>
     </section>
     <!-- Footer Section -->
     <footer>
-        <p class="copyright text-center">Copyright &copy Tryo Asnafi
-            <script>document.write(new Date().getFullYear())</script>. All Rights Reserved.
-        </p>
+      <p class="copyright text-center">
+        Copyright &copy Tryo Asnafi
+        <script>
+          document.write(new Date().getFullYear());
+        </script>
+        . All Rights Reserved.
+      </p>
     </footer>
 
     <!-- JavaScript section -->
     <script src="assets/js/script.js"></script>
-</body>
-
+  </body>
 </html>
